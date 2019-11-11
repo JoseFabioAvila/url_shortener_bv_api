@@ -20,6 +20,8 @@ This repository contains a URL Shortener API. This API shortens your URL and ret
 ```
     docker-compose run short-app rails db:migrate
     docker-compose -f docker-compose-test.yml run short-app-rspec rails db:test:prepare
+
+    docker-compose run short-app rails generate migration [migration_name]
 ```
 
 - Run the web server
