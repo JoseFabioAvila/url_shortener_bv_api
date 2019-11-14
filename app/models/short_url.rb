@@ -2,9 +2,12 @@ class ShortUrl < ApplicationRecord
   include ShortUrlsHelper
 
   validates :full_url, presence: true
-  # validate :validate_full_url
+  validates :full_url, url: { 
+    allow_nil: true, allow_blank: true,
+    no_local: true, schemes: %w[https http]
+  }
 
-  # short_code
+  # Shorten de given Url and save it
   def shorten_url
     self.short_code = ShortUrlsHelper.encode_base_62(id.to_i)
     save
@@ -12,10 +15,4 @@ class ShortUrl < ApplicationRecord
 
   # def update_title!
   # end
-
-  # private
-
-  # def validate_full_url
-  # end
-
 end
