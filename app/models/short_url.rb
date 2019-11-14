@@ -1,18 +1,21 @@
 class ShortUrl < ApplicationRecord
+  include ShortUrlsHelper
 
-  CHARACTERS = [*'0'..'9', *'a'..'z', *'A'..'Z'].freeze
+  validates :full_url, presence: true
+  # validate :validate_full_url
 
-  validate :validate_full_url
-
-  def short_code
+  # short_code
+  def shorten_url
+    self.short_code = ShortUrlsHelper.encode_base_62(id.to_i)
+    save
   end
 
-  def update_title!
-  end
+  # def update_title!
+  # end
 
-  private
+  # private
 
-  def validate_full_url
-  end
+  # def validate_full_url
+  # end
 
 end
