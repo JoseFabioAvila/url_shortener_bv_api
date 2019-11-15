@@ -22,6 +22,10 @@ class ShortUrl < ApplicationRecord
     save
   end
 
+  def self.top_100
+    order(click_count: :desc).limit(100)
+  end
+
   # def update_title!
   # end
 end

@@ -6,7 +6,7 @@ class ShortUrlsController < ApplicationController
   def index
     render json: {
       status: :success,
-      data: ShortUrl.all
+      data: ShortUrl::top_100
     }
   end
 
