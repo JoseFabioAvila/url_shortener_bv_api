@@ -13,6 +13,15 @@ class ShortUrl < ApplicationRecord
     save
   end
 
+  def self.decode_short_url(short_url)
+    ShortUrlsHelper.decode_base_62(short_url)
+  end
+
+  def increment_click_count
+    self.click_count += 1
+    save
+  end
+
   # def update_title!
   # end
 end

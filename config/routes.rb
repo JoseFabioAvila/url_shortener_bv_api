@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   mount Resque::Server, at: '/admin/jobs'
 
   resources :short_urls, only: [:index, :create, :show]
+
+  get '/:id', to: 'short_urls#redirect'
 end

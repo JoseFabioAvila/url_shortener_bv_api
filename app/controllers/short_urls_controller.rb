@@ -38,6 +38,18 @@ class ShortUrlsController < ApplicationController
     }, status: :bad_request
   end
 
+  def redirect
+    id = ShortUrl.decode_short_url(params[:id])
+    url = ShortUrl.find(id)
+    url.increment_click_count
+
+    return redirect_to url.full_url if url
+
+    render json: {
+      status: 404, errors: 'Not Found'
+    }, status: :not_found
+  end
+
   private
 
   def permitted_params
