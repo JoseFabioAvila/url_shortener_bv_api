@@ -1,23 +1,24 @@
+# Short Urls Controller
 class ShortUrlsController < ApplicationController
 
   # Since we're working on an API, we don't have authenticity tokens
   skip_before_action :verify_authenticity_token
 
+  # List of the 100 more visited urls
   def index
     render json: {
       status: :success,
-      data: ShortUrl::top_100
+      urls: ShortUrl::top_100
     }
   end
 
+  # Create a new url and creates its new short code
   def create
     new_url = ShortUrl.create(permitted_params)
 
     if new_url.shorten_url
-      new_url.update_title!
-
       return render json: {
-        status: :success, data: new_url
+        status: :success, short_code: new_url.short_code
       }
     end
 
@@ -26,26 +27,12 @@ class ShortUrlsController < ApplicationController
     }, status: :bad_request
   end
 
-  def show
-    url = ShortUrl.find(params[:id])
-
-    if url
-      return render json: {
-        status: :success, data: url
-      }
-    end
-
-    render json: {
-      status: 400, errors: url.errors.messages
-    }, status: :bad_request
-  end
-
+  # Redirect shorten urls to its full url
   def redirect
-    id = ShortUrl.decode_short_url(params[:id])
-    url = ShortUrl.find(id)
-    url.increment_click_count
-
-    return redirect_to url.full_url if url
+    if (url = ShortUrl.decode_short_url(params[:id]))
+      url.increment_click_count
+      return redirect_to url.full_url
+    end
 
     render json: {
       status: 404, errors: 'Not Found'
@@ -54,6 +41,7 @@ class ShortUrlsController < ApplicationController
 
   private
 
+  # Strong params
   def permitted_params
     params.permit(:full_url)
   end
