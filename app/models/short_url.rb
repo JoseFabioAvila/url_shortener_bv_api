@@ -18,14 +18,14 @@ class ShortUrl < ApplicationRecord
   end
 
   def increment_click_count
-    self.click_count += 1
-    save
+    update(click_count: click_count + 1)
   end
 
   def self.top_100
     order(click_count: :desc).limit(100)
   end
 
-  # def update_title!
-  # end
+  def update_title!
+    UpdateTitleJob.perform_later(self)
+  end
 end

@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'validate_url', '~> 1.0.8'
+gem 'httparty', '~> 0.16.2'
 
 gem "json"
 gem "resque"

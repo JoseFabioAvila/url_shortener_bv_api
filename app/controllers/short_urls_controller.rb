@@ -14,6 +14,8 @@ class ShortUrlsController < ApplicationController
     new_url = ShortUrl.create(permitted_params)
 
     if new_url.shorten_url
+      new_url.update_title!
+
       return render json: {
         status: :success, data: new_url
       }
