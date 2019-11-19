@@ -12,7 +12,7 @@ class ShortUrl < ApplicationRecord
   def shorten_url
     self.short_code = ShortUrlsHelper.encode_base_62(id.to_i)
     if save
-      UpdateTitleJob.perform_later(self)
+      update_title!
       return true
     end
 
